@@ -3,8 +3,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'treatment_screen.dart';
 import 'safe_mode_screen.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  double _intensity = 5;
+  int _frequency = 10;
+  String _duration = '15';
 
   @override
   Widget build(BuildContext context) {
@@ -45,28 +54,41 @@ class SettingsScreen extends StatelessWidget {
           children: [
             _buildLabel('Intensity'),
             Slider(
-              value: 5,
+              value: _intensity,
               min: 1,
               max: 10,
               divisions: 9,
-              label: '5',
-              onChanged: (value) {},
+              label: _intensity.toStringAsFixed(0),
+              onChanged: (value) {
+                setState(() {
+                  _intensity = value;
+                });
+              },
             ),
             const SizedBox(height: 20),
             _buildLabel('Frequency (Hz)'),
             DropdownButtonFormField<int>(
-              value: 10,
+              value: _frequency,
               items: [10, 20, 30, 40]
                   .map((e) => DropdownMenuItem(value: e, child: Text('$e')))
                   .toList(),
-              onChanged: (value) {},
+              onChanged: (value) {
+                setState(() {
+                  _frequency = value ?? 10;
+                });
+              },
               decoration: const InputDecoration(border: OutlineInputBorder()),
             ),
             const SizedBox(height: 20),
             _buildLabel('Duration (min)'),
             TextFormField(
-              initialValue: '15',
+              initialValue: _duration,
               keyboardType: TextInputType.number,
+              onChanged: (value) {
+                setState(() {
+                  _duration = value;
+                });
+              },
               decoration: const InputDecoration(border: OutlineInputBorder()),
             ),
             const Spacer(),
