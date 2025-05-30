@@ -8,6 +8,17 @@ class SafeModeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.red[50],
+      appBar: AppBar(
+        backgroundColor: Colors.red[700],
+        title: Text(
+          "Safe Mode",
+          style: GoogleFonts.poppins(),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(32.0),
@@ -38,7 +49,20 @@ class SafeModeScreen extends StatelessWidget {
                 ),
                 child: Text(
                   'Retry Connection',
-                  style: GoogleFonts.poppins(fontSize: 18),
+                  style: GoogleFonts.poppins(fontSize: 18, color: Colors.white),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Back to Settings',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    color: Colors.blue,
+                  ),
                 ),
               )
             ],

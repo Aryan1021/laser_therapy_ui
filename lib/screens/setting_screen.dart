@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'treatment_screen.dart';
+import 'safe_mode_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -22,6 +24,19 @@ class SettingsScreen extends StatelessWidget {
             color: Colors.white,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.warning_amber_rounded, color: Colors.white),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SafeModeScreen(),
+                ),
+              );
+            },
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -66,11 +81,16 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  // Navigate to Treatment Screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TreatmentScreen(),
+                    ),
+                  );
                 },
                 child: Text(
                   'Proceed to Treatment',
-                  style: GoogleFonts.poppins(fontSize: 20),
+                  style: GoogleFonts.poppins(fontSize: 20, color: Colors.white),
                 ),
               ),
             )

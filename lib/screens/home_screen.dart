@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:laser_therapy_ui/screens/setting_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -50,7 +51,10 @@ class HomeScreen extends StatelessWidget {
                   style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w500),
                 ),
                 onPressed: () {
-                  // Navigate to Settings Screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                  );
                 },
               ),
               const SizedBox(height: 24),
