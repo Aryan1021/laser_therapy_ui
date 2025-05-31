@@ -16,12 +16,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
   int _frequency = 10;
   String _duration = '15';
 
+  UARTService? _uartService;
+  bool _connected = false;
+
   void _sendTreatmentCommand(BuildContext context) async {
-    final uart = UARTService();
-    final success = await uart.connect();
+    _uartService = UARTService();
+    final success = await _uartService!.connect();
+
+    setState(() => _connected = success);
 
     if (success) {
-      uart.send("INT:\${_intensity.toInt()};FREQ:\$_frequency;DUR:\$_duration;");
+      _uartService!.send("INT:\${_intensity.toInt()};FREQ:\$_frequency;DUR:\$_duration;");
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -104,6 +109,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onChanged: (value) => _duration = value,
               decoration: const InputDecoration(border: OutlineInputBorder()),
             ),
+            const SizedBox(height: 16),
+            if (_uartService != null)
+              StreamBuilder<String>(
+                stream: _uartService!.onData,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text("Received: \${snapshot.data}",
+                          style: GoogleFonts.poppins()),
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                },
+              ),
             const Spacer(),
             SizedBox(
               width: double.infinity,

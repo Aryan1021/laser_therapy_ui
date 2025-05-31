@@ -1,8 +1,12 @@
 import 'dart:typed_data';
+import 'dart:async';
 import 'package:usb_serial/usb_serial.dart';
 
 class UARTService {
   UsbPort? _port;
+  final StreamController<String> _controller = StreamController.broadcast();
+
+  Stream<String> get onData => _controller.stream;
 
   Future<bool> connect() async {
     List<UsbDevice> devices = await UsbSerial.listDevices();
@@ -24,7 +28,7 @@ class UARTService {
 
     _port!.inputStream?.listen((Uint8List data) {
       final message = String.fromCharCodes(data);
-      print('Received: \$message');
+      _controller.add(message); // push to stream
     });
 
     return true;
@@ -36,5 +40,6 @@ class UARTService {
 
   void disconnect() {
     _port?.close();
+    _controller.close();
   }
 }
