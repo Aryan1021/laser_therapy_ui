@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'treatment_screen.dart';
 import 'safe_mode_screen.dart';
+import '../services/uart_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -14,6 +15,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
   double _intensity = 5;
   int _frequency = 10;
   String _duration = '15';
+
+  void _sendTreatmentCommand(BuildContext context) async {
+    final uart = UARTService();
+    final success = await uart.connect();
+
+    if (success) {
+      uart.send("INT:\${_intensity.toInt()};FREQ:\$_frequency;DUR:\$_duration;");
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TreatmentScreen(
+            intensity: _intensity.toInt(),
+            frequency: _frequency,
+            duration: int.tryParse(_duration) ?? 0,
+          ),
+        ),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SafeModeScreen()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +83,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               min: 1,
               max: 10,
               divisions: 9,
-              label: _intensity.toStringAsFixed(0),
-              onChanged: (value) {
-                setState(() {
-                  _intensity = value;
-                });
-              },
+              label: _intensity.toString(),
+              onChanged: (value) => setState(() => _intensity = value),
             ),
             const SizedBox(height: 20),
             _buildLabel('Frequency (Hz)'),
@@ -72,11 +93,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               items: [10, 20, 30, 40]
                   .map((e) => DropdownMenuItem(value: e, child: Text('$e')))
                   .toList(),
-              onChanged: (value) {
-                setState(() {
-                  _frequency = value ?? 10;
-                });
-              },
+              onChanged: (value) => setState(() => _frequency = value ?? 10),
               decoration: const InputDecoration(border: OutlineInputBorder()),
             ),
             const SizedBox(height: 20),
@@ -84,11 +101,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             TextFormField(
               initialValue: _duration,
               keyboardType: TextInputType.number,
-              onChanged: (value) {
-                setState(() {
-                  _duration = value;
-                });
-              },
+              onChanged: (value) => _duration = value,
               decoration: const InputDecoration(border: OutlineInputBorder()),
             ),
             const Spacer(),
@@ -102,18 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => TreatmentScreen(
-                        intensity: _intensity,
-                        frequency: _frequency,
-                        duration: _duration,
-                      ),
-                    ),
-                  );
-                },
+                onPressed: () => _sendTreatmentCommand(context),
                 child: Text(
                   'Proceed to Treatment',
                   style: GoogleFonts.poppins(fontSize: 20, color: Colors.white),

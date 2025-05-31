@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TreatmentScreen extends StatefulWidget {
-  final double intensity;
+  final int intensity;
   final int frequency;
-  final String duration;
+  final int duration;
 
   const TreatmentScreen({
     super.key,
@@ -27,7 +27,7 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
   @override
   void initState() {
     super.initState();
-    _remainingSeconds = int.tryParse(widget.duration)! * 60;
+    _remainingSeconds = widget.duration * 60;
   }
 
   void _startTimer() {
@@ -124,7 +124,7 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildStat('Intensity', widget.intensity.toStringAsFixed(0)),
+                _buildStat('Intensity', widget.intensity.toString()),
                 _buildStat('Frequency', '${widget.frequency} Hz'),
                 _buildStat('Duration', '${widget.duration} min'),
               ],
