@@ -21,23 +21,46 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _sendTreatmentCommand(BuildContext context) async {
     _uartService = UARTService();
+    print('>> Trying to connect UART...');
     final success = await _uartService!.connect();
+    print('>> UART connected: $success');
 
     setState(() => _connected = success);
 
     if (success) {
-      _uartService!.send("INT:\${_intensity.toInt()};FREQ:\$_frequency;DUR:\$_duration;");
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => TreatmentScreen(
-            intensity: _intensity.toInt(),
-            frequency: _frequency,
-            duration: int.tryParse(_duration) ?? 0,
+      try {
+        print('>> Sending UART command...');
+        _uartService!.send("INT:${_intensity.toInt()};FREQ:$_frequency;DUR:$_duration;");
+
+        print('>> Listening for UART data...');
+        final List<String> received = [];
+        final sub = _uartService!.onData.listen((data) {
+          received.add(data);
+          print('>> Received: $data');
+        });
+
+        await Future.delayed(const Duration(seconds: 2));
+        await sub.cancel();
+
+        if (!mounted) return;
+        print('>> Navigating to TreatmentScreen...');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TreatmentScreen(
+              intensity: _intensity.toInt(),
+              frequency: _frequency,
+              duration: int.tryParse(_duration) ?? 0,
+              receivedMessages: received,
+            ),
           ),
-        ),
-      );
+        );
+        print('>> Navigation complete');
+      } catch (e) {
+        print('Navigation error: $e');
+      }
     } else {
+      if (!mounted) return;
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const SafeModeScreen()),
@@ -109,22 +132,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onChanged: (value) => _duration = value,
               decoration: const InputDecoration(border: OutlineInputBorder()),
             ),
-            const SizedBox(height: 16),
-            if (_uartService != null)
-              StreamBuilder<String>(
-                stream: _uartService!.onData,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text("Received: \${snapshot.data}",
-                          style: GoogleFonts.poppins()),
-                    );
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                },
-              ),
             const Spacer(),
             SizedBox(
               width: double.infinity,

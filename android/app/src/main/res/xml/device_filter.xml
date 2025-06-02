@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Example: CH340 USB-to-Serial device -->
-    <usb-device vendor-id="6790" product-id="29987" />
-
-    <!-- You can add more USB devices below if needed -->
+    <usb-device
+        vendor-id="2341"
+        product-id="43" />
 </resources>

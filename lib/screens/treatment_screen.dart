@@ -6,12 +6,14 @@ class TreatmentScreen extends StatefulWidget {
   final int intensity;
   final int frequency;
   final int duration;
+  final List<String> receivedMessages;
 
   const TreatmentScreen({
     super.key,
     required this.intensity,
     required this.frequency,
     required this.duration,
+    required this.receivedMessages,
   });
 
   @override
@@ -70,9 +72,7 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
         content: Text('The treatment session has completed successfully.', style: GoogleFonts.poppins()),
         actions: [
           TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+            onPressed: () => Navigator.of(context).pop(),
             child: Text('OK', style: GoogleFonts.poppins(color: Colors.blue)),
           )
         ],
@@ -129,7 +129,17 @@ class _TreatmentScreenState extends State<TreatmentScreen> {
                 _buildStat('Duration', '${widget.duration} min'),
               ],
             ),
-            const Spacer(),
+            const SizedBox(height: 20),
+            Text('UART Output:', style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600)),
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.receivedMessages.length,
+                itemBuilder: (context, index) => Text(
+                  widget.receivedMessages[index],
+                  style: GoogleFonts.poppins(fontSize: 14),
+                ),
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
