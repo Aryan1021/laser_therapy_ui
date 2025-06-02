@@ -23,7 +23,7 @@ This app uses [`usb_serial`](https://pub.dev/packages/usb_serial) to connect to 
 
 ---
 
-### Permissions
+## Permissions
 
 Ensure these are added in `AndroidManifest.xml`:
 
@@ -32,7 +32,7 @@ Ensure these are added in `AndroidManifest.xml`:
 
 ---
 
-### device_filter.xml
+## device_filter.xml
 
 Create android/app/src/main/res/xml/device_filter.xml with your USB Vendor and Product IDs:
 <resources>
@@ -55,7 +55,7 @@ Inside your <activity> tag in AndroidManifest.xml:
 
 ---
 
-### 🚀 Getting Started
+## 🚀 Getting Started
 
 1. Clone the repo:
    git clone https://github.com/your-username/laser_therapy_ui.git
@@ -71,7 +71,7 @@ Inside your <activity> tag in AndroidManifest.xml:
 
 ---
 
-### 🧪 Testing
+## 🧪 Testing
 
 - UART messages are logged via console.
 - Received messages are displayed in real time in the UI.
@@ -79,14 +79,14 @@ Inside your <activity> tag in AndroidManifest.xml:
 
 ---
 
-### 📦 Dependencies
+## 📦 Dependencies
 
 - usb_serial
 - google_fonts
 
 ---
 
-### 🛠 TODO
+## 🛠 TODO
 
 - Add animation for UART connection state
 - Support device disconnection handling
@@ -94,6 +94,6 @@ Inside your <activity> tag in AndroidManifest.xml:
 
 ---
 
-### 📄 License
+## 📄 License
 
 MIT License. See LICENSE.
