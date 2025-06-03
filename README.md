@@ -17,6 +17,12 @@ A Flutter application that provides a user interface for configuring and monitor
 
 ---
 
+## 🖼️ UI Design
+
+👉 [View UI Design on Canva](https://www.canva.com/design/DAGpOXTpQTw/9HVbYzxGD-u-u16Cm1Ux9A/view?utm_content=DAGpOXTpQTw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hbbd024986e)
+
+---
+
 ## 🔌 UART Integration
 
 This app uses [`usb_serial`](https://pub.dev/packages/usb_serial) to connect to a USB device via UART.
