@@ -36,22 +36,26 @@ Ensure these are added in `AndroidManifest.xml`:
 ```xml
 <uses-permission android:name="android.hardware.usb.host" />
 <uses-feature android:name="android.hardware.usb.host" />
-
+```
 ---
 
 ## device_filter.xml
 
 Create android/app/src/main/res/xml/device_filter.xml with your USB Vendor and Product IDs:
+
+```xml
 <resources>
     <usb-device vendor-id="2341" product-id="0043" />
 </resources>
 Find your USB IDs via lsusb (Linux/macOS) or Device Manager (Windows).
-
+```
 ---
 
 ### Manifest Registration
 
 Inside your <activity> tag in AndroidManifest.xml:
+
+```xml
 <intent-filter>
     <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
 </intent-filter>
@@ -59,7 +63,7 @@ Inside your <activity> tag in AndroidManifest.xml:
 <meta-data
     android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
     android:resource="@xml/device_filter" />
-
+```
 ---
 
 ## 🚀 Getting Started
