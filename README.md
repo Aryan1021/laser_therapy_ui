@@ -33,6 +33,7 @@ This app uses [`usb_serial`](https://pub.dev/packages/usb_serial) to connect to 
 
 Ensure these are added in `AndroidManifest.xml`:
 
+```xml
 <uses-permission android:name="android.hardware.usb.host" />
 <uses-feature android:name="android.hardware.usb.host" />
 
@@ -92,6 +93,16 @@ Inside your <activity> tag in AndroidManifest.xml:
 
 ---
 
+## Build APK
+
+To generate the APK for distribution:
+flutter build apk --release
+
+APK will be located at:
+build/app/outputs/flutter-apk/app-release.apk
+
+---
+
 ## 🛠 TODO
 
 - Add animation for UART connection state
@@ -102,4 +113,4 @@ Inside your <activity> tag in AndroidManifest.xml:
 
 ## 📄 License
 
-MIT License. See LICENSE.
+This project is licensed under the MIT License.
